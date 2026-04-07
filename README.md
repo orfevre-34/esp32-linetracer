@@ -14,10 +14,12 @@ ESP32ベースのライントレースカー。ESP-IDF v5.2で動作。
 ## ビルド
 
 ```bash
-. ~/esp/esp-idf-5.2/export.sh
+. $IDF_PATH/export.sh
 idf.py build
 idf.py flash monitor
 ```
+
+ESP-IDF v5.2 のインストール先を `IDF_PATH` 環境変数に設定してください。
 
 ## 設定
 
