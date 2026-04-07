@@ -1,0 +1,279 @@
+menu "Line Tracer Configuration"
+
+    config LINETRACE_ENABLE_STRAIGHT_BOOST
+        bool "Enable straight boost mode"
+        default y
+        help
+            直線検出時の加速機能を有効にします。
+
+    config LINETRACE_DISABLE_SHARP_TURN
+        bool "Disable sharp turn mode (always use PID control)"
+        default n
+        help
+            急旋回モードを無効にし、常にPID制御のみで走行します。
+            有効にすると、エッジセンサーによる急カーブ検出を行わず、
+            すべての状況でPD制御を使用します。
+
+    menu "Pin Configuration"
+        config LINETRACE_I2C_SDA_PIN
+            int "I2C SDA Pin (OLED)"
+            default 25
+            range 0 39
+            help
+                OLED用I2C SDAピン番号。
+
+        config LINETRACE_I2C_SCL_PIN
+            int "I2C SCL Pin (OLED)"
+            default 26
+            range 0 39
+            help
+                OLED用I2C SCLピン番号。
+
+        config LINETRACE_BUTTON_A_PIN
+            int "Button A Pin"
+            default 5
+            range 0 39
+            help
+                ボタンA（スタート/ストップ）のGPIOピン番号。
+
+        config LINETRACE_BUTTON_B_PIN
+            int "Button B Pin"
+            default 4
+            range 0 39
+            help
+                ボタンB（キャリブレーション）のGPIOピン番号。
+
+        config LINETRACE_MOTOR_L_A_PIN
+            int "Motor Left A Pin"
+            default 23
+            range 0 39
+            help
+                左モーターHブリッジA端子のGPIOピン番号。
+
+        config LINETRACE_MOTOR_L_B_PIN
+            int "Motor Left B Pin"
+            default 22
+            range 0 39
+            help
+                左モーターHブリッジB端子のGPIOピン番号。
+
+        config LINETRACE_MOTOR_R_A_PIN
+            int "Motor Right A Pin"
+            default 19
+            range 0 39
+            help
+                右モーターHブリッジA端子のGPIOピン番号。
+
+        config LINETRACE_MOTOR_R_B_PIN
+            int "Motor Right B Pin"
+            default 18
+            range 0 39
+            help
+                右モーターHブリッジB端子のGPIOピン番号。
+
+        config LINETRACE_BUZZER_PIN
+            int "Buzzer Pin"
+            default 21
+            range 0 39
+            help
+                ブザーのGPIOピン番号。
+
+        config LINETRACE_LED_PIN
+            int "RGB LED Pin (PL9823)"
+            default 14
+            range 0 39
+            help
+                RGB LED（PL9823）のデータピン番号。
+
+        config LINETRACE_LED_COUNT
+            int "Number of LEDs"
+            default 1
+            range 1 10
+            help
+                接続されているLEDの数。
+    endmenu
+
+    menu "Line Trace Parameters"
+        config LINETRACE_BASE_SPEED
+            int "Base motor speed (0-100)"
+            default 20
+            range 0 100
+            help
+                通常走行時の基本モーター速度（0-100%）。
+
+        config LINETRACE_MAX_SPEED
+            int "Maximum motor speed (0-100)"
+            default 80
+            range 0 100
+            help
+                モーター速度の上限値（0-100%）。
+
+        config LINETRACE_THRESHOLD
+            int "Line detection threshold (mV)"
+            default 1500
+            range 100 3300
+            help
+                ライン検出用ADC閾値（ミリボルト単位）。
+                この値以上でラインを検出したと判定します。
+
+        config LINETRACE_KP
+            int "Proportional gain (x100)"
+            default 80
+            range 0 200
+            help
+                PD制御の比例ゲイン（100倍した値）。
+                例: 80 = 0.80
+
+        config LINETRACE_KD
+            int "Derivative gain (x100)"
+            default 20
+            range 0 200
+            help
+                PD制御の微分ゲイン（100倍した値）。
+                例: 20 = 0.20
+
+        config LINETRACE_SHARP_TURN_SPEED
+            int "Sharp turn inner wheel speed"
+            default 15
+            range -100 100
+            help
+                急カーブ時の内輪速度。
+                負の値でピボットターン（その場旋回）になります。
+
+        config LINETRACE_SHARP_TURN_OUTER
+            int "Sharp turn outer wheel speed"
+            default 100
+            range 0 100
+            help
+                急カーブ時の外輪速度。
+
+        config LINETRACE_RAMP_RATE
+            int "Speed ramp rate per cycle"
+            default 5
+            range 1 50
+            help
+                1制御サイクルあたりの最大速度変化量。
+                滑らかな加減速のために使用します。
+
+        config LINETRACE_SHARP_TURN_PD_GAIN
+            int "Sharp turn PD gain (x100)"
+            default 30
+            range 0 100
+            help
+                急カーブ時のPD制御ゲイン（100倍した値）。
+                例: 30 = 0.30
+
+        config LINETRACE_STRAIGHT_BOOST_SPEED
+            int "Straight boost speed"
+            default 70
+            range 0 100
+            help
+                直線加速時の目標速度。
+
+        config LINETRACE_STRAIGHT_ERROR_THRESHOLD
+            int "Straight error threshold (x100)"
+            default 15
+            range 0 100
+            help
+                直線検出用の誤差閾値（100倍した値）。
+                この値以下の誤差で直線と判定します。
+                例: 15 = 0.15
+    endmenu
+
+    menu "Turn Control Parameters"
+        config LINETRACE_POST_TURN_STABILIZE_CYCLES
+            int "Post-turn stabilization cycles"
+            default 70
+            range 0 200
+            help
+                急カーブ後に逆方向ターンを抑制するサイクル数。
+                50Hzの場合、70サイクル = 約1.4秒。
+
+        config LINETRACE_STRAIGHT_BOOST_THRESHOLD
+            int "Straight boost activation threshold"
+            default 10
+            range 1 100
+            help
+                直線加速を開始するまでの直線検出サイクル数。
+
+        config LINETRACE_STRAIGHT_BOOST_MAX_COUNT
+            int "Straight boost max count"
+            default 50
+            range 10 200
+            help
+                最大ブースト速度に達するまでのサイクル数。
+
+        config LINETRACE_HOLD_CYCLES_HIGH
+            int "High confidence hold cycles"
+            default 2
+            range 1 20
+            help
+                高信頼度パターン（端センサー検出など）の
+                ヒステリシスサイクル数。
+
+        config LINETRACE_HOLD_CYCLES_LOW
+            int "Low confidence hold cycles"
+            default 6
+            range 1 20
+            help
+                低信頼度パターン（曖昧な検出）の
+                ヒステリシスサイクル数。
+
+        config LINETRACE_HOLD_CYCLES_EXIT
+            int "Turn exit hold cycles"
+            default 4
+            range 1 20
+            help
+                急カーブ状態から抜けるために必要な
+                ヒステリシスサイクル数。
+
+        config LINETRACE_PD_CORRECTION_SCALE
+            int "PD correction scale for sharp turns"
+            default 30
+            range 1 100
+            help
+                急カーブ時のPD補正量のスケール係数。
+
+        config LINETRACE_SEARCH_TURN_SPEED
+            int "Search turn speed difference"
+            default 25
+            range 0 50
+            help
+                ライン消失時の探索旋回における
+                左右モーター速度差。
+    endmenu
+
+    menu "Button Configuration"
+        config LINETRACE_BUTTON_DEBOUNCE_MS
+            int "Button debounce time (ms)"
+            default 20
+            range 5 100
+            help
+                ボタンのチャタリング防止時間（ミリ秒）。
+
+        config LINETRACE_BUTTON_LONG_PRESS_MS
+            int "Long press detection time (ms)"
+            default 800
+            range 200 2000
+            help
+                長押し判定時間（ミリ秒）。
+
+        config LINETRACE_BUTTON_DOUBLE_CLICK_MS
+            int "Double click detection time (ms)"
+            default 300
+            range 100 500
+            help
+                ダブルクリック判定の最大間隔（ミリ秒）。
+    endmenu
+
+    menu "Control Loop"
+        config LINETRACE_CONTROL_PERIOD_MS
+            int "Control loop period (ms)"
+            default 20
+            range 5 100
+            help
+                メイン制御ループの周期（ミリ秒）。
+                例: 20ms = 50Hz
+    endmenu
+
+endmenu
