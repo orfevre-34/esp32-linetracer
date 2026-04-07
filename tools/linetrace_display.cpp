@@ -13,7 +13,7 @@
 
 #include "ssd1306.hpp"
 #include "button.hpp"
-#include "adc_test.hpp"
+#include "adc_reader.hpp"
 
 static const char* TAG = "linetrace_display";
 

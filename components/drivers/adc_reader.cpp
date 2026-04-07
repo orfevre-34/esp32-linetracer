@@ -3,7 +3,7 @@
   複数チャンネル対応版
 */
 
-#include "adc_test.hpp"
+#include "adc_reader.hpp"
 
 #include "esp_log.h"
 

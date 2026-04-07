@@ -13,7 +13,7 @@
 #include <cstdio>
 #include <cstring>
 
-#include "adc_test.hpp"
+#include "adc_reader.hpp"
 #include "button.hpp"
 #include "buzzer.hpp"
 #include "esp_log.h"

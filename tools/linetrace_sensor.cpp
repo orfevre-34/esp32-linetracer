@@ -5,7 +5,7 @@
 
 #include <cstdio>
 
-#include "adc_test.hpp"
+#include "adc_reader.hpp"
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

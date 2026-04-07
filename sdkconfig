@@ -371,13 +371,6 @@ CONFIG_PARTITION_TABLE_MD5=y
 # end of Partition Table
 
 #
-# micro-ROS example-app settings
-#
-CONFIG_MICRO_ROS_APP_STACK=16000
-CONFIG_MICRO_ROS_APP_TASK_PRIO=5
-# end of micro-ROS example-app settings
-
-#
 # Line Tracer Configuration
 #
 CONFIG_LINETRACE_ENABLE_STRAIGHT_BOOST=y
@@ -442,27 +435,6 @@ CONFIG_LINETRACE_BUTTON_DOUBLE_CLICK_MS=100
 CONFIG_LINETRACE_CONTROL_PERIOD_MS=20
 # end of Control Loop
 # end of Line Tracer Configuration
-
-#
-# micro-ROS Settings
-#
-CONFIG_MICRO_ROS_ESP_XRCE_DDS_MIDDLEWARE=y
-# CONFIG_MICRO_ROS_ESP_EMBEDDEDRTPS_MIDDLEWARE is not set
-CONFIG_MICRO_ROS_ESP_NETIF_WLAN=y
-# CONFIG_MICRO_ROS_ESP_NETIF_ENET is not set
-# CONFIG_MICRO_ROS_ESP_UART_TRANSPORT is not set
-
-#
-# WiFi Configuration
-#
-CONFIG_ESP_WIFI_SSID="Buffalo-2G-04A0"
-CONFIG_ESP_WIFI_PASSWORD="ujmspdujkfy3b"
-CONFIG_ESP_MAXIMUM_RETRY=5
-# end of WiFi Configuration
-
-CONFIG_MICRO_ROS_AGENT_IP="192.168.11.17"
-CONFIG_MICRO_ROS_AGENT_PORT="8888"
-# end of micro-ROS Settings
 
 #
 # Compiler options
