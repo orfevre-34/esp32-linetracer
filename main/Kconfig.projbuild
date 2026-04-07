@@ -6,6 +6,13 @@ menu "Line Tracer Configuration"
         help
             直線検出時の加速機能を有効にします。
 
+    config LINETRACE_WHITE_LINE
+        bool "White line on black background"
+        default n
+        help
+            白地に黒ラインではなく、黒地に白ラインを検出します。
+            センサーの閾値判定が反転されます。
+
     config LINETRACE_DISABLE_SHARP_TURN
         bool "Disable sharp turn mode (always use PID control)"
         default n

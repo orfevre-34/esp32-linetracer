@@ -99,6 +99,7 @@ esp_err_t ADCChannel::init() {
       .unit_id = unit_.getUnit(),
       .atten = ADC_ATTEN_DB_12,
       .bitwidth = ADC_BITWIDTH_12,
+      .default_vref = 1100,
   };
   ret = adc_cali_create_scheme_line_fitting(&cali_config, &cali_handle_);
 #else

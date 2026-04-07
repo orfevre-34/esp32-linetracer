@@ -27,6 +27,24 @@
 
 static const char* TAG = "linetrace_car";
 
+// ===== Line Detection Helper =====
+// Returns true if sensor detects the line, and the weight for position calc.
+static inline bool is_line_detected(int value, int threshold) {
+#ifdef CONFIG_LINETRACE_WHITE_LINE
+  return value < threshold;
+#else
+  return value >= threshold;
+#endif
+}
+
+static inline int detection_weight(int value) {
+#ifdef CONFIG_LINETRACE_WHITE_LINE
+  return 3300 - value;  // Invert: low value = strong detection
+#else
+  return value;
+#endif
+}
+
 // ===== Pin Configuration (from Kconfig) =====
 // OLED
 #define I2C_SDA_PIN ((gpio_num_t)CONFIG_LINETRACE_I2C_SDA_PIN)
@@ -388,7 +406,7 @@ void draw_standby() {
   g_oled->draw_string(5, 15, "Sensors:");
   for (int i = 0; i < NUM_SENSORS; i++) {
     int x = 55 + i * 11;
-    if (g_sensor_values[i] >= g_params.threshold) {
+    if (is_line_detected(g_sensor_values[i], g_params.threshold)) {
       g_oled->fill_rect(x, 14, 9, 9);
     } else {
       g_oled->draw_rect(x, 14, 9, 9);
@@ -481,7 +499,7 @@ void draw_running() {
     }
 
     // Detection indicator
-    if (g_sensor_values[i] >= g_params.threshold) {
+    if (is_line_detected(g_sensor_values[i], g_params.threshold)) {
       g_oled->fill_circle(x + 9, bar_y + bar_h + 5, 3);
     }
   }
@@ -671,9 +689,9 @@ void calculate_line_position() {
   int right_count = 0;  // S3, S4, S5
 
   for (int i = 0; i < NUM_SENSORS; i++) {
-    detected[i] = (g_sensor_values[i] >= g_params.threshold);
+    detected[i] = is_line_detected(g_sensor_values[i], g_params.threshold);
     if (detected[i]) {
-      int weight = g_sensor_values[i];
+      int weight = detection_weight(g_sensor_values[i]);
       weighted_sum += positions[i] * weight;
       total_weight += weight;
       g_detected_count++;
